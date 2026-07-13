@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node / frontend
+node_modules/
+npm-debug.log*
+
+# Django static files collected at deploy time
+staticfiles/
+
