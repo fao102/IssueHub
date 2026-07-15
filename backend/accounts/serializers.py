@@ -19,8 +19,20 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "is_email_verified",
+            "is_staff",
             "date_joined",
         ]
+        read_only_fields = fields
+
+
+class MinimalUserSerializer(serializers.ModelSerializer):
+    """Lightweight user representation for embedding in other resources
+    (e.g. a ticket's created_by/assigned_to) without Sprint-1-specific
+    fields like is_email_verified."""
+
+    class Meta:
+        model = User
+        fields = ["id", "email", "first_name", "last_name"]
         read_only_fields = fields
 
 

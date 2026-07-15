@@ -8,6 +8,9 @@ import VerifyEmail from './pages/VerifyEmail'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
+import TicketsList from './pages/TicketsList'
+import TicketDetail from './pages/TicketDetail'
+import TicketForm from './pages/TicketForm'
 
 export default function App() {
   return (
@@ -24,6 +27,10 @@ export default function App() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/tickets" element={<TicketsList />} />
+            <Route path="/tickets/new" element={<TicketForm />} />
+            <Route path="/tickets/:id" element={<TicketDetail />} />
+            <Route path="/tickets/:id/edit" element={<TicketForm />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
