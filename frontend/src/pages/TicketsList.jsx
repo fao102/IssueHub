@@ -49,9 +49,14 @@ export default function TicketsList() {
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h1 className="h3 mb-0">Tickets</h1>
-        <Link to="/tickets/new" className="btn btn-primary">
-          New ticket
-        </Link>
+        <div className="d-flex gap-2">
+          <Link to="/tickets/board" className="btn btn-outline-secondary">
+            Board view
+          </Link>
+          <Link to="/tickets/new" className="btn btn-primary">
+            New ticket
+          </Link>
+        </div>
       </div>
 
       <div className="row g-2 mb-3">
