@@ -15,6 +15,16 @@ export default function Navbar() {
       <Link to="/" className="navbar-brand fw-semibold">
         IssueHub
       </Link>
+      {isAuthenticated && (
+        <div className="d-flex gap-3">
+          <Link to="/dashboard" className="nav-link text-light">
+            Dashboard
+          </Link>
+          <Link to="/tickets" className="nav-link text-light">
+            Tickets
+          </Link>
+        </div>
+      )}
       <div className="ms-auto d-flex align-items-center gap-3">
         {isAuthenticated ? (
           <>
