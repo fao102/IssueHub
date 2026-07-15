@@ -23,6 +23,9 @@ export default function Navbar() {
           <Link to="/tickets" className="nav-link text-light">
             Tickets
           </Link>
+          <Link to="/tickets/board" className="nav-link text-light">
+            Kanban Board
+          </Link>
         </div>
       )}
       <div className="ms-auto d-flex align-items-center gap-3">
