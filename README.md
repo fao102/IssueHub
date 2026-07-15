@@ -41,7 +41,7 @@ console email backend.
 
 ```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate
+python -m venv .venv && source .venv/Scripts/activate
 pip install -r requirements-dev.txt
 cp .env.example .env   # defaults to a local sqlite db if DATABASE_URL is unset
 python manage.py migrate
