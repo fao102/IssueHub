@@ -29,7 +29,7 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        send_verification_email(user)
+        # send_verification_email(user)
 
         refresh = RefreshToken.for_user(user)
         return Response(
