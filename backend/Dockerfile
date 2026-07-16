@@ -26,7 +26,7 @@ RUN mkdir -p /app/staticfiles
 #            python manage.py collectstatic --noinput"
 
 # CMD bash -c "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 1"
-COPY entry.sh /entry.sh
-RUN chmod +x /entry.sh
+COPY entry.sh entry.sh
+RUN chmod +x entry.sh
 
 CMD ["/entry.sh"]
