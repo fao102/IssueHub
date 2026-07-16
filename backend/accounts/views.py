@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -18,6 +20,7 @@ from .serializers import (
 from .utils import send_password_reset_email, send_verification_email
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(generics.CreateAPIView):
@@ -29,7 +32,11 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        # send_verification_email(user)
+
+        try:
+            send_verification_email(user)
+        except Exception:
+            logger.exception("Registration email send failed for user %s", user.email)
 
         refresh = RefreshToken.for_user(user)
         return Response(
