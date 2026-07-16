@@ -56,7 +56,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_ORIGINS =config("CORS_ALLOW_ORIGINS", default="http://localhost:5173,http://127.0.0.1:5173", cast=Csv())
+
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
