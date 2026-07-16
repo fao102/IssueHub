@@ -20,7 +20,9 @@ services:
     env_file:
       - ./backend/.env
     environment:
-      DATABASE_URL: postgres://issuehub:issuehub@db:5432/issuehub
+      DATABASE_URL: postgresql://neondb_owner:npg_MtgPeIYlC0F9@ep-crimson-dust-adawr6ts-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      
+
     ports:
       - "8000:8000"
     volumes:
