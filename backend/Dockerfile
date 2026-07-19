@@ -4,7 +4,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PYTHONPATH=/app \
-    DJANGO_SETTINGS_MODULE=core.settings
+    DJANGO_SETTINGS_MODULE=config.settings
 
 WORKDIR /app
 
@@ -16,17 +16,9 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the backend code
-COPY / /app
+COPY . /app
 
-RUN mkdir -p /app/staticfiles
+RUN mkdir -p /app/staticfiles \
+&& chmod +x /app/entry.sh
 
-# Run migrations + collectstatic at start, then serve
-# Railway sets $PORT; default to 8000 for local
-# CMD bash -c "python manage.py migrate --noinput && \
-#            python manage.py collectstatic --noinput"
-
-# CMD bash -c "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 1"
-COPY entry.sh /entry.sh
-RUN chmod +x /entry.sh
-
-CMD ["/entry.sh"]
+CMD ["/app/entry.sh"]

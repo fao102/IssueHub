@@ -1,22 +1,8 @@
 services:
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: issuehub
-      POSTGRES_PASSWORD: issuehub
-      POSTGRES_DB: issuehub
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U issuehub"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     env_file:
       - ./backend/.env
   
