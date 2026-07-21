@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { deleteTicket, getAssignableUsers, getTicket, updateTicket } from '../api/tickets'
+import { queryRag } from '../api/rag'
 import { extractErrorMessage } from '../api/errors'
 import { PRIORITY_OPTIONS, STATUS_OPTIONS } from '../constants/tickets'
 import { useAuth } from '../hooks/useAuth'
@@ -17,6 +18,10 @@ export default function TicketDetail() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
+  const [assistantQuestion, setAssistantQuestion] = useState('')
+  const [assistantAnswer, setAssistantAnswer] = useState('')
+  const [assistantSources, setAssistantSources] = useState([])
+  const [assistantLoading, setAssistantLoading] = useState(false)
 
   useEffect(() => {
     loadTicket()
@@ -60,6 +65,24 @@ export default function TicketDetail() {
       navigate('/tickets')
     } catch (err) {
       setError(extractErrorMessage(err))
+    }
+  }
+
+  async function handleAssistantSubmit(e) {
+    e.preventDefault()
+    if (!assistantQuestion.trim()) return
+
+    setAssistantLoading(true)
+    setAssistantAnswer('')
+    setAssistantSources([])
+    try {
+      const result = await queryRag({ question: assistantQuestion, ticket_id: id })
+      setAssistantAnswer(result.answer)
+      setAssistantSources(result.sources || [])
+    } catch (err) {
+      setAssistantAnswer(extractErrorMessage(err))
+    } finally {
+      setAssistantLoading(false)
     }
   }
 
@@ -109,6 +132,45 @@ export default function TicketDetail() {
                 Opened by {ticket.created_by.email} on {new Date(ticket.created_at).toLocaleString()}
               </p>
               <p style={{ whiteSpace: 'pre-wrap' }}>{ticket.description || 'No description provided.'}</p>
+            </div>
+          </div>
+
+          <div className="card mb-3">
+            <div className="card-header">AI Assistant</div>
+            <div className="card-body">
+              <form onSubmit={handleAssistantSubmit} className="d-flex gap-2 mb-3">
+                <input
+                  className="form-control"
+                  value={assistantQuestion}
+                  onChange={(e) => setAssistantQuestion(e.target.value)}
+                  placeholder="Ask about this ticket or related knowledge"
+                />
+                <button className="btn btn-primary" type="submit" disabled={assistantLoading}>
+                  {assistantLoading ? 'Thinking...' : 'Ask'}
+                </button>
+              </form>
+
+              {assistantAnswer && (
+                <div>
+                  <div className="fw-semibold mb-2">Answer</div>
+                  <div className="border rounded p-3 bg-light" style={{ whiteSpace: 'pre-wrap' }}>
+                    {assistantAnswer}
+                  </div>
+                  {assistantSources.length > 0 && (
+                    <div className="mt-3">
+                      <div className="fw-semibold mb-2">Sources</div>
+                      <ul className="mb-0">
+                        {assistantSources.map((source) => (
+                          <li key={source.id}>
+                            <strong>{source.title}</strong> <span className="text-muted">({source.source_type})</span>
+                            <div className="small text-muted">{source.content}</div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
