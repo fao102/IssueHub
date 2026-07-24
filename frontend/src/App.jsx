@@ -12,6 +12,8 @@ import TicketsList from './pages/TicketsList'
 import TicketDetail from './pages/TicketDetail'
 import TicketForm from './pages/TicketForm'
 import KanbanBoard from './pages/KanbanBoard'
+import KnowledgeList from './pages/KnowledgeList'
+import KnowledgeForm from './pages/KnowledgeForm'
 
 export default function App() {
   return (
@@ -33,6 +35,9 @@ export default function App() {
             <Route path="/tickets/new" element={<TicketForm />} />
             <Route path="/tickets/:id" element={<TicketDetail />} />
             <Route path="/tickets/:id/edit" element={<TicketForm />} />
+            <Route path="/knowledge" element={<KnowledgeList />} />
+            <Route path="/knowledge/new" element={<KnowledgeForm />} />
+            <Route path="/knowledge/:id/edit" element={<KnowledgeForm />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

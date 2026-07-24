@@ -6,3 +6,9 @@ gunicorn==23.0.0
 python-decouple==3.8
 psycopg2-binary
 dj-database-url==2.3.0
+
+# RAG retrieval pipeline. llama-index-core is enough for the default local
+# (no-API-key) embedding + in-memory vector retrieval. Provider integrations
+# and the pgvector store live in requirements-ai.txt (optional) - see
+# docs/RAG_SETUP.md.
+llama-index-core==0.12.8

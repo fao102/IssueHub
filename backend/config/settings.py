@@ -155,3 +155,33 @@ DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="IssueHub <noreply@iss
 # How long an email verification / password reset link stays valid.
 EMAIL_TOKEN_EXPIRY_HOURS = config("EMAIL_TOKEN_EXPIRY_HOURS", default=48, cast=int)
 PASSWORD_RESET_TOKEN_EXPIRY_HOURS = config("PASSWORD_RESET_TOKEN_EXPIRY_HOURS", default=2, cast=int)
+
+# RAG (Retrieval-Augmented Generation) settings.
+# The retrieval half always works with no external services: the default
+# embedding provider is a small local deterministic model and the default
+# vector backend is rebuilt in-memory from KnowledgeEntry rows. Plug in a real
+# LLM provider + key to get generated answers instead of extractive snippets,
+# and/or switch the vector backend to pgvector for production. See
+# docs/RAG_SETUP.md.
+RAG_EMBED_PROVIDER = config("RAG_EMBED_PROVIDER", default="local")  # local | gemini | openai | mock
+RAG_LLM_PROVIDER = config("RAG_LLM_PROVIDER", default="none")  # none | gemini | openai | mock
+RAG_VECTOR_BACKEND = config("RAG_VECTOR_BACKEND", default="memory")  # memory | pgvector
+RAG_TOP_K = config("RAG_TOP_K", default=4, cast=int)
+RAG_CHUNK_SIZE = config("RAG_CHUNK_SIZE", default=512, cast=int)
+RAG_CHUNK_OVERLAP = config("RAG_CHUNK_OVERLAP", default=40, cast=int)
+# Embedding vector width. Must match the embedding provider: 256 for the local
+# default, 768 for Gemini text-embedding-004, 1536 for OpenAI
+# text-embedding-3-small. Only the pgvector store needs this to be exact.
+RAG_EMBED_DIM = config("RAG_EMBED_DIM", default=256, cast=int)
+
+# Provider model names + API keys (only read when the matching provider is set).
+GEMINI_API_KEY = config("GEMINI_API_KEY", default="")
+GEMINI_EMBED_MODEL = config("GEMINI_EMBED_MODEL", default="models/text-embedding-004")
+GEMINI_LLM_MODEL = config("GEMINI_LLM_MODEL", default="models/gemini-1.5-flash")
+
+OPENAI_API_KEY = config("OPENAI_API_KEY", default="")
+OPENAI_EMBED_MODEL = config("OPENAI_EMBED_MODEL", default="text-embedding-3-small")
+OPENAI_LLM_MODEL = config("OPENAI_LLM_MODEL", default="gpt-4o-mini")
+
+# The pgvector store connects with this (defaults to the main DATABASE_URL).
+RAG_PGVECTOR_URL = config("RAG_PGVECTOR_URL", default=config("DATABASE_URL", default=""))

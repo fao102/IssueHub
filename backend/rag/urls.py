@@ -1,5 +1,12 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from .views import RagQueryView
+from .views import KnowledgeEntryViewSet, RagQueryView
 
-urlpatterns = [path("rag/query/", RagQueryView.as_view(), name="rag-query")]
+router = DefaultRouter()
+router.register("knowledge", KnowledgeEntryViewSet, basename="knowledge")
+
+urlpatterns = [
+    path("rag/query/", RagQueryView.as_view(), name="rag-query"),
+    path("", include(router.urls)),
+]

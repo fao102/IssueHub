@@ -26,6 +26,11 @@ export default function Navbar() {
           <Link to="/tickets/board" className="nav-link text-light">
             Kanban Board
           </Link>
+          {user?.is_staff && (
+            <Link to="/knowledge" className="nav-link text-light">
+              Knowledge
+            </Link>
+          )}
         </div>
       )}
       <div className="ms-auto d-flex align-items-center gap-3">

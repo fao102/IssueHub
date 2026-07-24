@@ -1,0 +1,25 @@
+# Optional AI/RAG extras - install with:  pip install -r requirements-ai.txt
+#
+# These are NOT needed to run the app or its tests. The RAG feature works out
+# of the box with a local, no-API-key embedding and extractive answers. Install
+# these only when you want:
+#   - real LLM-generated answers (a provider + API key), and/or
+#   - the pgvector-backed persistent vector store for production.
+#
+# See docs/RAG_SETUP.md for exactly what to set once these are installed.
+
+-r requirements.txt
+
+# --- pgvector persistent vector store (RAG_VECTOR_BACKEND=pgvector) ---
+llama-index-vector-stores-postgres==0.4.1
+pgvector==0.3.6
+sqlalchemy==2.0.36
+asyncpg==0.30.0
+
+# --- Google Gemini provider (RAG_LLM_PROVIDER=gemini / RAG_EMBED_PROVIDER=gemini) ---
+llama-index-llms-gemini==0.4.2
+llama-index-embeddings-gemini==0.3.1
+
+# --- OpenAI provider (RAG_LLM_PROVIDER=openai / RAG_EMBED_PROVIDER=openai) ---
+llama-index-llms-openai==0.3.12
+llama-index-embeddings-openai==0.3.1

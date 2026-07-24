@@ -21,6 +21,8 @@ export default function TicketDetail() {
   const [assistantQuestion, setAssistantQuestion] = useState('')
   const [assistantAnswer, setAssistantAnswer] = useState('')
   const [assistantSources, setAssistantSources] = useState([])
+  const [assistantConfigured, setAssistantConfigured] = useState(true)
+  const [assistantAsked, setAssistantAsked] = useState(false)
   const [assistantLoading, setAssistantLoading] = useState(false)
 
   useEffect(() => {
@@ -75,12 +77,15 @@ export default function TicketDetail() {
     setAssistantLoading(true)
     setAssistantAnswer('')
     setAssistantSources([])
+    setAssistantAsked(true)
     try {
       const result = await queryRag({ question: assistantQuestion, ticket_id: id })
       setAssistantAnswer(result.answer)
       setAssistantSources(result.sources || [])
+      setAssistantConfigured(result.configured !== false)
     } catch (err) {
       setAssistantAnswer(extractErrorMessage(err))
+      setAssistantConfigured(true)
     } finally {
       setAssistantLoading(false)
     }
@@ -149,6 +154,14 @@ export default function TicketDetail() {
                   {assistantLoading ? 'Thinking...' : 'Ask'}
                 </button>
               </form>
+
+              {assistantAsked && !assistantConfigured && (
+                <div className="alert alert-info py-2 small" role="status">
+                  No AI answer-generation model is configured, so the assistant is returning the most
+                  relevant knowledge-base excerpts instead of a generated answer. See{' '}
+                  <code>docs/RAG_SETUP.md</code> to wire up a provider key.
+                </div>
+              )}
 
               {assistantAnswer && (
                 <div>
